@@ -24,7 +24,7 @@ def vgg_layers(inputs, target_layer):
         return x
     x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv2')(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)
-    mask_1 = MaxPoolingMask2D(pool_size=(2,2), name='block1_pool_index')(x)
+    mask_1 = MaxPoolingMask2D(pool_size=(2,2),strides=(2, 2),name='block1_pool_index')(x)
     masks.append(mask_1)
 
     # Block 2
@@ -33,7 +33,7 @@ def vgg_layers(inputs, target_layer):
         return x
     x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv2')(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(x)
-    mask_2 = MaxPoolingMask2D(pool_size=(2,2), name='block2_pool_index')(x)
+    mask_2 = MaxPoolingMask2D(pool_size=(2,2), strides=(2, 2), name='block2_pool_index')(x)
     masks.append(mask_2)
 
     # Block 3
@@ -44,7 +44,7 @@ def vgg_layers(inputs, target_layer):
     x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv3')(x)
     x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv4')(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
-    mask_3 = MaxPoolingMask2D(pool_size=(2,2), name='block3_pool_index')(x)
+    mask_3 = MaxPoolingMask2D(pool_size=(2,2), strides=(2, 2), name='block3_pool_index')(x)
     masks.append(mask_3)
 
     # Block 4
@@ -55,7 +55,7 @@ def vgg_layers(inputs, target_layer):
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv3')(x)
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv4')(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)
-    mask_4 = MaxPoolingMask2D(pool_size=(2,2), name='block4_pool_index')(x)
+    mask_4 = MaxPoolingMask2D(pool_size=(2,2), strides=(2, 2), name='block4_pool_index')(x)
     masks.append(mask_4)
 
     # Block 5
