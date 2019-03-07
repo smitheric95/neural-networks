@@ -1,17 +1,14 @@
 from keras import backend as K
 from keras.layers.convolutional import UpSampling2D
+from keras.layers import MaxPooling2D
 
 # https://gist.github.com/PavlosMelissinos/6ddb1ba86f51214477a76ce670d18c97
 class MaxPoolingMask2D(MaxPooling2D):
-    def __init__(self, pool_size=(2, 2), strides=None, border_mode='valid',
-                 dim_ordering='default', **kwargs):
-        super(MaxPoolingMask2D, self).__init__(pool_size, strides, border_mode,
-                                           dim_ordering, **kwargs)
+    def __init__(self, pool_size=(2, 2), strides=None, **kwargs):
+        super(MaxPoolingMask2D, self).__init__(pool_size, strides, **kwargs)
 
-    def _pooling_function(self, inputs, pool_size, strides,
-                          border_mode, dim_ordering):
-        pooled = K.pool2d(inputs, pool_size, strides, border_mode,
-                 dim_ordering, pool_mode='max')
+    def _pooling_function(self, inputs, pool_size, strides, padding, data_format):
+        pooled = K.pool2d(inputs, pool_size, strides, pool_mode='max')
         upsampled = UpSampling2D(size=pool_size)(pooled)
         indexMask = K.tf.equal(inputs, upsampled)
         assert indexMask.get_shape().as_list() == inputs.get_shape().as_list()
