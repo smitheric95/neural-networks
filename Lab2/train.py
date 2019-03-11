@@ -72,5 +72,5 @@ encoder_decoder = EncoderDecoder(target_layer=target_layer)
 
 callbacks = [OutputPreview(encoder_decoder, './doge-256.jpg', 5000, './preview-%d' % target_layer)]
 encoder_decoder.model.fit_generator(gen, steps_per_epoch=steps_per_epoch,
-        epochs=epochs, callbacks=callbacks)
+        epochs=epochs, callbacks=callbacks, verbose=False)
 encoder_decoder.export_decoder()

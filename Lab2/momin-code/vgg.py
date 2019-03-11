@@ -21,46 +21,46 @@ def vgg_layers(inputs, target_layer):
     # Block 1
     x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv1')(inputs)
     if target_layer == 1:
-        return x
+        return [x,*masks]
     x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv2')(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)
     mask_1 = MaxPoolingMask2D(pool_size=(2,2),strides=(2, 2),name='block1_pool_index')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)
     masks.append(mask_1)
 
     # Block 2
     x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv1')(x)
     if target_layer == 2:
-        return x
+        return [x,*masks]
     x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv2')(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(x)
     mask_2 = MaxPoolingMask2D(pool_size=(2,2), strides=(2, 2), name='block2_pool_index')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(x)
     masks.append(mask_2)
 
     # Block 3
     x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv1')(x)
     if target_layer == 3:
-        return x
+        return [x,*masks]
     x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv2')(x)
     x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv3')(x)
     x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv4')(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
     mask_3 = MaxPoolingMask2D(pool_size=(2,2), strides=(2, 2), name='block3_pool_index')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
     masks.append(mask_3)
 
     # Block 4
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv1')(x)
     if target_layer == 4:
-        return x
+        return [x,*masks]
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv2')(x)
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv3')(x)
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv4')(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)
     mask_4 = MaxPoolingMask2D(pool_size=(2,2), strides=(2, 2), name='block4_pool_index')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)
     masks.append(mask_4)
 
     # Block 5
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv1')(x)
-    return (x,masks)
+    return [x,*masks]
 
 
 def load_weights(model):
@@ -83,12 +83,13 @@ def VGG19(input_tensor=None, input_shape=None, target_layer=1):
     VGG19, up to the target layer (1 for relu1_1, 2 for relu2_1, etc.)
     """
     if input_tensor is None:
-        inputs = Input(shape=input_shape)
+        inputs = Input(shape=input_shape, name='vgg-input-0')
     else:
-        inputs = Input(tensor=input_tensor, shape=input_shape)
-    model = Model(inputs, vgg_layers(inputs, target_layer)[0], name='vgg19')
+        inputs = Input(tensor=input_tensor, shape=input_shape, name='vgg-input-1')
+    model = Model(inputs, vgg_layers(inputs, target_layer), name='vgg19')
     load_weights(model)
-    return (model,vgg_layers(inputs, target_layer)[1])
+    return model
+    #return (model,vgg_layers(inputs, target_layer)[1])
 
 
 def preprocess_input(x):

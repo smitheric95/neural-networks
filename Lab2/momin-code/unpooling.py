@@ -1,8 +1,7 @@
 from keras import backend as K
 from keras.layers.convolutional import UpSampling2D
-from keras.layers import MaxPooling2D
+from keras.layers import MaxPooling2D, Layer
 
-# https://gist.github.com/PavlosMelissinos/6ddb1ba86f51214477a76ce670d18c97
 class MaxPoolingMask2D(MaxPooling2D):
     def __init__(self, pool_size=(2, 2), strides=None, **kwargs):
         super(MaxPoolingMask2D, self).__init__(pool_size, strides, **kwargs)
@@ -13,26 +12,32 @@ class MaxPoolingMask2D(MaxPooling2D):
         indexMask = K.tf.equal(inputs, upsampled)
         assert indexMask.get_shape().as_list() == inputs.get_shape().as_list()
         return indexMask
-    
+
     def get_output_shape_for(self, input_shape):
         return input_shape
 
+class Unpooling(Layer):
+    def __init__(self, **kwargs):
+        super(Unpooling, self).__init__(**kwargs)
 
-def unpooling(inputs):
-    '''
-    do unpooling with indices, move this to separate layer if it works
-    1. do naive upsampling (repeat elements)
-    2. keep only values in mask (stored indices) and set the rest to zeros
-    '''
-    x = inputs[0]
-    mask = inputs[1]
-    mask_shape = mask.get_shape().as_list()
-    x_shape = x.get_shape().as_list()
-    pool_size = (mask_shape[1] / x_shape[1], mask_shape[2] / x_shape[2])
-    on_success = UpSampling2D(size=pool_size)(x)
-    on_fail = K.zeros_like(on_success)
-    return K.tf.where(mask, on_success, on_fail)
+    def build(self, input_shape):
+        pass
 
+    def call(self, x, mask=None):
+        layer = x[0]
+        layer_mask = x[1]
+        mask_shape = layer_mask.get_shape().as_list()
+        layer_shape = layer.get_shape().as_list()
+        pool_size = (mask_shape[1] / layer_shape[1], mask_shape[2] / layer_shape[2])
+        on_success = UpSampling2D(size=pool_size)(layer)
+        while on_success.shape[1] < mask_shape[1]:
+            pool_size = (pool_size[0]*2, pool_size[1]*2)
+            on_success = UpSampling2D(size=pool_size)(layer)
 
-def unpooling_output_shape(input_shape):
-    return input_shape[1]
+        while on_success.shape[-1] > mask_shape[-1]:
+            on_success = on_success[:,:,:,::2]
+        on_fail = K.zeros_like(on_success)
+        return K.tf.where(K.tf.cast(layer_mask,bool), on_success, on_fail)
+
+    def compute_output_shape(self, input_shape):
+        return input_shape[1]

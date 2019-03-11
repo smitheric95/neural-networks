@@ -5,11 +5,11 @@ from scipy.misc import imsave
 
 from model import EncoderDecoder
 
-DECODER_PATH = './models/decoder_5.h5'
-INPUT_IMG_PATH = './doge-256.jpg'
-OUTPUT_IMG_PATH = './doge-decoded.jpg'
+DECODER_PATH = './decoder_3.h5'
+INPUT_IMG_PATH = '../doge-256.jpg'
+OUTPUT_IMG_PATH = '../doge-decoded.jpg'
 
-encoder_decoder = EncoderDecoder(decoder_path=DECODER_PATH)
+encoder_decoder = EncoderDecoder(decoder_path=DECODER_PATH,target_layer=3)
 
 input_img = image.load_img(INPUT_IMG_PATH)
 input_img = image.img_to_array(input_img)

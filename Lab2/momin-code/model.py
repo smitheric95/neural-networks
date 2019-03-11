@@ -18,17 +18,10 @@ class EncoderDecoder:
         #Changed to tuple output
         self.encoder = VGG19(input_shape=input_shape, target_layer=target_layer)
         
-        self.masks = self.encoder[1]
-        self.encoder = self.encoder[0]
-        
-        if decoder_path:
-            self.decoder = load_model(decoder_path)
-        else:
-            self.decoder = self.create_decoder(target_layer)
+        self.decoder = self.create_decoder(target_layer)
 
-        self.model = Sequential()
-        self.model.add(self.encoder)
-        self.model.add(self.decoder)
+        self.model = Model(self.encoder.inputs, self.decoder(self.encoder.outputs))
+
 
         self.loss = self.create_loss_fn(self.encoder)
 
@@ -36,8 +29,8 @@ class EncoderDecoder:
 
     def create_loss_fn(self, encoder):
         def get_encodings(inputs):
-            encoder = VGG19(inputs, self.input_shape, self.target_layer)[0]
-            return encoder.output
+            encoder = VGG19(inputs, self.input_shape, self.target_layer)
+            return encoder.output[0]
 
         def loss(img_in, img_out):
             encoding_in = get_encodings(img_in)
@@ -47,8 +40,10 @@ class EncoderDecoder:
         return loss
 
     def create_decoder(self, target_layer):
-        inputs = Input(shape=self.encoder.output_shape[1:])
-        layers = decoder_layers(inputs, target_layer,self.masks)
+        inputs = []
+        for output in self.encoder.outputs:
+            inputs.append(Input(shape=[int(a) for a in output.shape[1:]]))
+        layers = decoder_layers(inputs, target_layer) #,self.masks)
         output = Conv2D(3, (3, 3), activation='relu', padding='same',
                         name='decoder_out')(layers)
         return Model(inputs, output, name='decoder_%s' % target_layer)
