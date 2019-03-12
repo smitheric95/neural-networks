@@ -3,6 +3,7 @@ from keras.layers import Conv2D, Input
 import keras.backend as K
 from vgg import VGG19, preprocess_input
 from decoder import decoder_layers
+from unpooling import *
 
 LAMBDA=1
 
@@ -18,7 +19,10 @@ class EncoderDecoder:
         #Changed to tuple output
         self.encoder = VGG19(input_shape=input_shape, target_layer=target_layer)
         
-        self.decoder = self.create_decoder(target_layer)
+        if decoder_path:
+            self.decoder = load_model(decoder_path,custom_objects={'Unpooling':Unpooling})
+        else:
+            self.decoder = self.create_decoder(target_layer)
 
         self.model = Model(self.encoder.inputs, self.decoder(self.encoder.outputs))
 
@@ -43,10 +47,13 @@ class EncoderDecoder:
         inputs = []
         for output in self.encoder.outputs:
             inputs.append(Input(shape=[int(a) for a in output.shape[1:]]))
+            print('    ',inputs[-1].shape)
         layers = decoder_layers(inputs, target_layer) #,self.masks)
         output = Conv2D(3, (3, 3), activation='relu', padding='same',
                         name='decoder_out')(layers)
-        return Model(inputs, output, name='decoder_%s' % target_layer)
+        model = Model(inputs, output, name='decoder_%s' % target_layer)
+        print(model.summary())
+        return model
 
     def export_decoder(self):
         self.decoder.save('decoder_%s.h5' % self.target_layer)
