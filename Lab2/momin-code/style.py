@@ -5,6 +5,7 @@ from keras.preprocessing import image
 from keras import backend as K
 import numpy as np
 from scipy.misc import imsave
+from unpooling import *
 
 from vgg import VGG19, preprocess_input
 
@@ -88,11 +89,11 @@ input_shape = img_c_shape
 
 print('Loading decoders...')
 decoders = {}
-decoders[1] = load_model('./models/decoder_1.h5')
-decoders[2] = load_model('./models/decoder_2.h5')
-decoders[3] = load_model('./models/decoder_3.h5')
-decoders[4] = load_model('./models/decoder_4.h5')
-decoders[5] = load_model('./models/decoder_5.h5')
+decoders[1] = load_model('./decoder_1.h5')
+decoders[2] = load_model('./decoder_2.h5', custom_objects={'Unpooling':Unpooling})
+#decoders[3] = load_model('./decoder_3.h5')
+#decoders[4] = load_model('./decoder_4.h5')
+#decoders[5] = load_model('./decoder_5.h5')
 
 print('Loading VGG...')
 vgg = VGG19(input_shape=input_shape, target_layer=5)
@@ -103,10 +104,11 @@ plt.imshow(np.clip(img_c[0] / 255, 0, 1))
 plt.show()
 
 print('Styling...')
-for i in [3, 1]:
+for i in [2,1]:
     feats_c = get_vgg_features(vgg, img_c, i)
     feats_s = get_vgg_features(vgg, img_s, i)
     feats_cs = wct(feats_c, feats_s)
+    print(f"shape: {feats_cs.shape}")
     img_c = decoders[i].predict(feats_cs)
     plt.imshow(np.clip(img_c[0] / 255, 0, 1))
     plt.show()
