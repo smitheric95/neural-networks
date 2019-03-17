@@ -85,6 +85,7 @@ def VGG19(input_tensor=None, input_shape=None, target_layer=1):
     """
     if input_tensor is None:
         inputs = Input(shape=input_shape, name='vgg-input-0')
+
     else:
         inputs = Input(tensor=input_tensor, shape=input_shape, name='vgg-input-1')
     model = Model(inputs, vgg_layers(inputs, target_layer), name='vgg19')

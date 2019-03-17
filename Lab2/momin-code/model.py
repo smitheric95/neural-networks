@@ -16,7 +16,6 @@ class EncoderDecoder:
         self.input_shape = input_shape
         self.target_layer = target_layer
 
-        #Changed to tuple output
         self.encoder = VGG19(input_shape=input_shape, target_layer=target_layer)
         
         if decoder_path:

@@ -9,19 +9,9 @@ from unpooling import *
 
 from vgg import VGG19, preprocess_input
 
-def get_vgg_features(vgg, inputs, target_layer):
-    output_layers = [
-            'block1_conv1',
-            'block2_conv1',
-            'block3_conv1',
-            'block4_conv1',
-            'block5_conv1'
-    ]
-
-    outputs = [layer.output for layer in vgg.layers
-               if layer.name == output_layers[target_layer-1]]
-    f = K.function([vgg.input] + [K.learning_phase()], outputs)
-    return f([inputs, 1.])
+def get_vgg_features(inputs, target_layer):
+    encoder = VGG19(input_shape=(256,256,3), target_layer=target_layer)
+    return encoder.predict(inputs)
 
 
 def wct(content, style, alpha=0.6, eps=1e-5):
@@ -91,12 +81,11 @@ print('Loading decoders...')
 decoders = {}
 decoders[1] = load_model('./decoder_1.h5')
 decoders[2] = load_model('./decoder_2.h5', custom_objects={'Unpooling':Unpooling})
-#decoders[3] = load_model('./decoder_3.h5')
-#decoders[4] = load_model('./decoder_4.h5')
-#decoders[5] = load_model('./decoder_5.h5')
+decoders[3] = load_model('./decoder_3.h5', custom_objects={'Unpooling':Unpooling})
+decoders[4] = load_model('./decoder_4.h5', custom_objects={'Unpooling':Unpooling})
+decoders[5] = load_model('./decoder_5.h5', custom_objects={'Unpooling':Unpooling})
 
-print('Loading VGG...')
-vgg = VGG19(input_shape=input_shape, target_layer=5)
+
 
 import matplotlib.pyplot as plt
 
@@ -104,12 +93,21 @@ plt.imshow(np.clip(img_c[0] / 255, 0, 1))
 plt.show()
 
 print('Styling...')
-for i in [2,1]:
-    feats_c = get_vgg_features(vgg, img_c, i)
-    feats_s = get_vgg_features(vgg, img_s, i)
-    feats_cs = wct(feats_c, feats_s)
+for i in [5,4,3,2,1]:
+    print('Loading VGG...')
+    feats_c = get_vgg_features(img_c, i)
+    feats_s = get_vgg_features(img_s, i)
+    feats_cs = wct(feats_c[0], feats_s[0])
+
+    if i == 1: 
+        wct_output = [feats_cs]
+    else:
+        wct_output = [feats_cs]
+        for x in feats_c[1:]:
+            wct_output.append(x)
+
     print(f"shape: {feats_cs.shape}")
-    img_c = decoders[i].predict(feats_cs)
+    img_c = decoders[i].predict(wct_output)
     plt.imshow(np.clip(img_c[0] / 255, 0, 1))
     plt.show()
 
