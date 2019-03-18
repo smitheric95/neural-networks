@@ -2,7 +2,7 @@ import multiprocessing.pool
 from functools import partial
 import os
 
-# from keras.preprocessing.image import _count_valid_files_in_directory
+#from keras.preprocessing.image import _count_valid_files_in_directory
 
 def _count_valid_files_in_directory(directory, white_list_formats, follow_links):
     """Count files with extension in `white_list_formats` contained in a directory.
@@ -18,7 +18,7 @@ def _count_valid_files_in_directory(directory, white_list_formats, follow_links)
         return sorted(os.walk(subpath, followlinks=follow_links), key=lambda tpl: tpl[0])
 
     samples = 0
-    for root, _, files in _recursive_list(directory):
+    for _, _, files in _recursive_list(directory):
         for fname in files:
             is_valid = False
             for extension in white_list_formats:
