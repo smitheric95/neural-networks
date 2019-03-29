@@ -272,7 +272,7 @@ save_img(img, fname='layer1_dream.png')
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_14_1.png)
+![png](readme_images/Lab%20One_final_two_14_1.png)
 
 
 We see in this image that by allowing layer 1 to be the most dominant we see most exaggerations and perturbations center around edges and shapes. It is true however that there seems to be a lot of background noise in this process as well. This suggests that the earlier layer focuses slightly on shapes but still can be very noisy
@@ -348,7 +348,7 @@ save_img(img, fname='layer2_dream.png')
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_17_1.png)
+![png](readme_images/Lab%20One_final_two_17_1.png)
 
 
 With layer 2 most exaggerated we see a clearer effect of what layer 1 attempted. Shapes and edges are more of the focus in this iteration. There is still background noise and alteration but less so than prior.
@@ -424,7 +424,7 @@ save_img(img, fname='layer3_dream.png')
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_20_1.png)
+![png](readme_images/Lab%20One_final_two_20_1.png)
 
 
 With layer 3 most exaggerated we start to see features beginning to be exaggerated.The ears, neck and face start to pop out. There even appears to be another face emerging near the leg of the cat. This suggests that perhaps the third layer focuses more on faces.
@@ -500,7 +500,7 @@ save_img(img, fname='layer4_dream.png')
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_23_1.png)
+![png](readme_images/Lab%20One_final_two_23_1.png)
 
 
 With layer 4 most exaggerated the face becomes the focal point of the photo. We see less phantom faces showing up throughout the photo then with layer 3 exaggerated, but the main cat face is the main emphasis. It seems as if layer 4 searches for more well defined faces. 
@@ -630,7 +630,7 @@ save_img(img, fname='final_dream.png') #Save the final image to disk
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_28_1.png)
+![png](readme_images/Lab%20One_final_two_28_1.png)
 
 
     Processing image shape (145, 218)
@@ -647,7 +647,7 @@ save_img(img, fname='final_dream.png') #Save the final image to disk
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_28_3.png)
+![png](readme_images/Lab%20One_final_two_28_3.png)
 
 
     Processing image shape (204, 306)
@@ -664,7 +664,7 @@ save_img(img, fname='final_dream.png') #Save the final image to disk
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_28_5.png)
+![png](readme_images/Lab%20One_final_two_28_5.png)
 
 
     Processing image shape (285, 428)
@@ -681,7 +681,7 @@ save_img(img, fname='final_dream.png') #Save the final image to disk
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_28_7.png)
+![png](readme_images/Lab%20One_final_two_28_7.png)
 
 
     Processing image shape (400, 600)
@@ -698,7 +698,7 @@ save_img(img, fname='final_dream.png') #Save the final image to disk
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_28_9.png)
+![png](readme_images/Lab%20One_final_two_28_9.png)
 
 
 Next, we wanted to introduce additional methods to add noise to our photo outside of the scaling of the image above. To do this, we implemented methods to add two additional types of noise: Gaussian and Salt & Pepper.
@@ -807,35 +807,35 @@ save_img(img, fname='final_noisy_cat.png') #Save the final image to disk
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_32_1.png)
+![png](readme_images/Lab%20One_final_two_32_1.png)
 
 
     Processing image shape (145, 218)
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_32_3.png)
+![png](readme_images/Lab%20One_final_two_32_3.png)
 
 
     Processing image shape (204, 306)
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_32_5.png)
+![png](readme_images/Lab%20One_final_two_32_5.png)
 
 
     Processing image shape (285, 428)
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_32_7.png)
+![png](readme_images/Lab%20One_final_two_32_7.png)
 
 
     Processing image shape (400, 600)
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_32_9.png)
+![png](readme_images/Lab%20One_final_two_32_9.png)
 
 
 As seen by the photos above, the noise methods do in fact seem to be working. Salt & pepper is added at every stage, and the presence of random red, blue, and green colors can be seen.
@@ -909,7 +909,7 @@ save_img(img, fname='final_noisy_dream.png') #Save the final image to disk
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_35_1.png)
+![png](readme_images/Lab%20One_final_two_35_1.png)
 
 
     Processing image shape (145, 218)
@@ -926,7 +926,7 @@ save_img(img, fname='final_noisy_dream.png') #Save the final image to disk
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_35_3.png)
+![png](readme_images/Lab%20One_final_two_35_3.png)
 
 
     Processing image shape (204, 306)
@@ -943,7 +943,7 @@ save_img(img, fname='final_noisy_dream.png') #Save the final image to disk
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_35_5.png)
+![png](readme_images/Lab%20One_final_two_35_5.png)
 
 
     Processing image shape (285, 428)
@@ -960,7 +960,7 @@ save_img(img, fname='final_noisy_dream.png') #Save the final image to disk
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_35_7.png)
+![png](readme_images/Lab%20One_final_two_35_7.png)
 
 
     Processing image shape (400, 600)
@@ -977,7 +977,7 @@ save_img(img, fname='final_noisy_dream.png') #Save the final image to disk
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_35_9.png)
+![png](readme_images/Lab%20One_final_two_35_9.png)
 
 
 # Final Results
@@ -994,11 +994,11 @@ with open('final_noisy_dream.png','rb') as f:
 ```
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_38_0.png)
+![png](readme_images/Lab%20One_final_two_38_0.png)
 
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_38_1.png)
+![png](readme_images/Lab%20One_final_two_38_1.png)
 
 
 # Iterative Process Analysis
@@ -1012,7 +1012,7 @@ with open('cat.gif','rb') as f:
 ```
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_40_0.png)
+![png](readme_images/Lab%20One_final_two_40_0.png)
 
 
 We apply the deep dream process to the cat picture above and note the changes as octaves pass. Initially, it seems that the network is wanting to outline the object as it creates noise and emphasis in those areas. This gets clearer to see as we run more octaves. Not only does the cat attract the attention of the network we start to see that the face of the cat begins to become more and more exaggerated. On our final pass it becomes very exaggerated, to the point of adding more below the face of the cat. This hints that perhaps the network works on classification on edges and then to faces. Given that we are using an ImageNet trained network, this seems to be an understandable concusion
@@ -1026,7 +1026,7 @@ with open('noisy_cat.gif','rb') as f:
 ```
 
 
-![png](Lab%20One_final_two_files/Lab%20One_final_two_43_0.png)
+![png](readme_images/Lab%20One_final_two_43_0.png)
 
 
 The noisy image has artifacts that pop up after going through the deep dream process. The salt & peper effect adds small noise to the background and the guassian blurs the features slightly. We see that the network takes these perturbations and continues to estimate featues out of them. The noisy picture seems to have multiple faces (near the tail, neck, legs) and eye like objects appear in the background. This could help as a better indicator of what the network tends towards. 
