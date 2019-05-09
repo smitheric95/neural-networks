@@ -19,7 +19,7 @@ def make_multi_env(scenario_name, benchmark=False,done_cb=None):
     return env
 
 def plot_state_scatter(agent,title1,title2,xlabel1,ylabel1,xlabel2,ylabel2,color, lim1 = [-0.1,0.1,-1.4,0.6],lim2=[-2.0,1.0,-2.0,2.0]):
-    fig = plt.figure()
+    fig = plt.figure(figsize=(10,4))
 
     a = []
     b = []
@@ -28,7 +28,7 @@ def plot_state_scatter(agent,title1,title2,xlabel1,ylabel1,xlabel2,ylabel2,color
         a.append(sample[0][0][0])
         b.append(sample[0][0][1])
 
-    sub1 = fig.add_subplot(2,2,1)
+    sub1 = fig.add_subplot(1,2,1)
     sub1.grid(True,linewidth='0.4',color='white')
     sub1.set_xlabel(xlabel1)
     sub1.set_ylabel(ylabel1)
@@ -47,7 +47,7 @@ def plot_state_scatter(agent,title1,title2,xlabel1,ylabel1,xlabel2,ylabel2,color
         c.append(sample[0][0][2])
         d.append(sample[0][0][3])
 
-    sub2 = fig.add_subplot(2,2,2)
+    sub2 = fig.add_subplot(1,2,2)
     sub2.grid(True,linewidth='0.4',color='white')
     sub2.set_xlabel(xlabel2)
     sub2.set_ylabel(ylabel2)
@@ -58,19 +58,19 @@ def plot_state_scatter(agent,title1,title2,xlabel1,ylabel1,xlabel2,ylabel2,color
     sub2.set_facecolor('#e6f3ff')
     sub2.scatter(c,d,s=3,color = color)
 
-    sub2.savefig('Plots/%s_state_scatter.png'%title)
+    plt.savefig('Plots/%s_state_scatter.png'%title1)
 
-def plot_rewards_and_length(rewards, min_reward,max_reward, lengths):
+def plot_rewards_and_length(title, rewards, min_reward,max_reward, lengths):
 
     rewards_df = pd.DataFrame(rewards)
-    rewards_df.to_csv('Data/rewards.csv')
+    rewards_df.to_csv('Data/rewards_%s.csv'%title)
 
-    fig = plt.figure()
-    sub1 = fig.add_subplot(2,2,1)
+    fig = plt.figure(figsize=(10,4))
+    sub1 = fig.add_subplot(1,2,1)
     sub1.set_title('Reward')
     sub1.set_ylim(bottom=min_reward,top=max_reward)
-    sub1.set_xlabel('episodes')
-    sub1.set_ylabel('reward')
+    sub1.set_xlabel('Episodes')
+    sub1.set_ylabel('Reward')
     sub1.plot(rewards)
 
     '''
@@ -94,14 +94,14 @@ def plot_rewards_and_length(rewards, min_reward,max_reward, lengths):
             avg_reward[i] = rewards[i]
         else:
             avg_reward[i] = (cumulative_rewards[i] - cumulative_rewards[0])/i
-    sub3 = fig.add_subplot(2,2,2)
+    sub3 = fig.add_subplot(1,2,2)
     sub3.set_ylim(bottom=min_reward,top=max_reward)
-    sub3.set_title('average rewards')
-    sub3.set_xlabel('episodes')
+    sub3.set_title('Average Rewards')
+    sub3.set_xlabel('Episodes')
     sub3.plot(avg_reward)
     
     # plt.show()
-    sub2.savefig('Plots/%s_rewards.png'%title)
+    plt.savefig('Plots/%s_rewards.png'%title)
 
 
 
