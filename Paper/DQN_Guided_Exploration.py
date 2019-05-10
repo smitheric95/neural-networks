@@ -6,6 +6,7 @@ from keras.layers import Dense, Dropout
 from keras.optimizers import Adam
 from DQN_Agent import DQN_Agent
 from scipy import stats
+import random
 
 class DQN_Guided_Exploration(DQN_Agent):
     def __init__(self, env, distribution):
@@ -29,18 +30,6 @@ class DQN_Guided_Exploration(DQN_Agent):
         self.initial_random_steps = 10000
         self.actions_count = 0
         self.clip_errors = True
-        self.available_distributions = {
-            "multivariate_normal" : stats.multivariate_normal.pdf,
-            # "matrix_normal" : stats.matrix_normal.pdf,
-            "dirichlet" : stats.dirichlet.pdf,
-            "wishart" : stats.wishart.pdf,
-            "invwishart" : stats.invwishart.pdf
-            # "multinomial" : stats.multinomial.pdf,
-            # "special_ortho_group" : stats.special_ortho_group.pdf,
-            # "ortho_group" : stats.ortho_group.pdf,
-            # "unitary_group" : stats.unitary_group.pdf,
-            # "random_correlation" : stats.random_correlation.pdf
-        }
         self.chosen_distribution = distribution
         '''#Lunar
         self.gamma = 0.99
@@ -119,6 +108,8 @@ class DQN_Guided_Exploration(DQN_Agent):
             p = stats.dirichlet.pdf(x, [1 for _ in x])
         elif self.chosen_distribution == "dirichlet_2":
             p = stats.dirichlet.pdf(x, [3 for _ in x])
+        elif self.chosen_distribution == "dirichlet_3":
+            p = stats.dirichlet.pdf(x, [random.uniform(0.1, 10) for _ in x])
             
         return p
 
