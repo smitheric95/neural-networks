@@ -106,10 +106,20 @@ class DQN_Guided_Exploration(DQN_Agent):
         for s in samples:
             design.append(s[0])
         design = np.stack(design).T
-        cov = np.cov(design)
-        mean = np.mean(design,axis = 1)
-        # p = stats.multivariate_normal.pdf(state[0],mean,cov)
-        p = self.available_distributions[self.chosen_distribution](state[0], mean, cov)
+        
+        x = state[0] + 1
+        x = [i/sum(x) for i in x] # normalize
+            
+        if self.chosen_distribution == "multivariate_normal":
+            cov = np.cov(design)
+            mean = np.mean(design,axis = 1)
+            p = stats.multivariate_normal.pdf(state[0],mean,cov)
+        
+        elif self.chosen_distribution == "dirichlet_1":
+            p = stats.dirichlet.pdf(x, [1 for _ in x])
+        elif self.chosen_distribution == "dirichlet_2":
+            p = stats.dirichlet.pdf(x, [3 for _ in x])
+            
         return p
 
     def init_dynamics_model(self):
@@ -159,3 +169,4 @@ class DQN_Guided_Exploration(DQN_Agent):
             self.dynamics_model_converged = True
             print('Dynamics model has converged!')
         print(self.dynamics_model.metrics_names, scores)
+

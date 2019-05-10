@@ -59,7 +59,7 @@ def plot_state_scatter(agent,title1,title2,xlabel1,ylabel1,xlabel2,ylabel2,color
     sub2.scatter(c,d,s=3,color = color)
 
     plt.savefig('Plots/scatter_%s.png'%title1)
-    plt.show()
+    # plt.show()
     plt.close()
 
 def plot_rewards_and_length(title, rewards, min_reward,max_reward, lengths):
@@ -103,7 +103,7 @@ def plot_rewards_and_length(title, rewards, min_reward,max_reward, lengths):
     sub3.plot(avg_reward)
     
     plt.savefig('Plots/rewards_%s.png'%title)
-    plt.show()
+    # plt.show()
     plt.close()
 
 
