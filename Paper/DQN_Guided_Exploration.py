@@ -8,7 +8,7 @@ from DQN_Agent import DQN_Agent
 from scipy import stats
 
 class DQN_Guided_Exploration(DQN_Agent):
-    def __init__(self, env):
+    def __init__(self, env, distribution):
         self.env = env
         self.replay_memory = deque(maxlen=200000)
 
@@ -29,7 +29,19 @@ class DQN_Guided_Exploration(DQN_Agent):
         self.initial_random_steps = 10000
         self.actions_count = 0
         self.clip_errors = True
-
+        self.available_distributions = {
+            "multivariate_normal" : stats.multivariate_normal.pdf,
+            # "matrix_normal" : stats.matrix_normal.pdf,
+            "dirichlet" : stats.dirichlet.pdf,
+            "wishart" : stats.wishart.pdf,
+            "invwishart" : stats.invwishart.pdf
+            # "multinomial" : stats.multinomial.pdf,
+            # "special_ortho_group" : stats.special_ortho_group.pdf,
+            # "ortho_group" : stats.ortho_group.pdf,
+            # "unitary_group" : stats.unitary_group.pdf,
+            # "random_correlation" : stats.random_correlation.pdf
+        }
+        self.chosen_distribution = distribution
         '''#Lunar
         self.gamma = 0.99
         self.epsilon = 1.0
@@ -96,7 +108,8 @@ class DQN_Guided_Exploration(DQN_Agent):
         design = np.stack(design).T
         cov = np.cov(design)
         mean = np.mean(design,axis = 1)
-        p = stats.multivariate_normal.pdf(state[0],mean,cov)
+        # p = stats.multivariate_normal.pdf(state[0],mean,cov)
+        p = self.available_distributions[self.chosen_distribution](state[0], mean, cov)
         return p
 
     def init_dynamics_model(self):
